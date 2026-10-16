@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
-import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsScreen
+import io.mmaltsev.vkeducation.presentation.applist.AppListScreen
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VkEducationTheme {
-                AppDetailsScreen(
+                AppListScreen(
                     Modifier
                         .fillMaxSize()
                         .safeDrawingPadding()
