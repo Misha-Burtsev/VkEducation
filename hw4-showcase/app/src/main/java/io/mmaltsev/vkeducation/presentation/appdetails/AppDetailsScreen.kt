@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,25 +23,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.R
+import io.mmaltsev.vkeducation.presentation.applist.App
+import io.mmaltsev.vkeducation.presentation.applist.getApps
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppDetailsScreen(
+    onBackClick: () -> Unit,
+    onShowcaseAppClick: (App) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appDetails = remember { getApp() }
+    val showcaseApps = remember { getApps() }
 
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
 
     var descriptionCollapsed by remember { mutableStateOf(false) }
 
-    Column(modifier) {
+    Column(modifier.verticalScroll(rememberScrollState())) {
         Toolbar(
-            onBackClick = {
-                // TODO: Открыть предыдущий экран через Jetpack Navigation
-                Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-            },
+            onBackClick = onBackClick,
             onShareClick = {
                 Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
             },
@@ -89,6 +93,12 @@ fun AppDetailsScreen(
                 .fillMaxWidth()
                 .padding(start = 16.dp),
         )
+        Spacer(Modifier.height(12.dp))
+        Showcase(
+            apps = showcaseApps,
+            onAppClick = onShowcaseAppClick,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
@@ -115,6 +125,8 @@ private fun getApp(): AppDetails = AppDetails(
 private fun Preview() {
     VkEducationTheme {
         AppDetailsScreen(
+            onBackClick = {},
+            onShowcaseAppClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
