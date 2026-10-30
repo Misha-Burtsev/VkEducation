@@ -14,13 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.R
-import io.mmaltsev.vkeducation.presentation.applist.App
+import io.mmaltsev.vkeducation.domain.model.App
 import io.mmaltsev.vkeducation.presentation.applist.AppItem
-import io.mmaltsev.vkeducation.presentation.applist.getApps
-import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 private const val APPS_PER_PAGE = 3
 
@@ -55,17 +52,5 @@ fun Showcase(
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    VkEducationTheme {
-        Showcase(
-            apps = getApps(),
-            onAppClick = {},
-            modifier = Modifier.fillMaxWidth(),
-        )
     }
 }

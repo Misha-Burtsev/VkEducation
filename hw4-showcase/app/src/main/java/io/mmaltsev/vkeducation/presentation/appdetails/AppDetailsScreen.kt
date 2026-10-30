@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,33 +12,25 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.R
-import io.mmaltsev.vkeducation.presentation.applist.App
-import io.mmaltsev.vkeducation.presentation.applist.getApps
-import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
+import io.mmaltsev.vkeducation.domain.model.App
 
 @Composable
 fun AppDetailsScreen(
+    uiState: AppDetailsUiState,
+    onReadMoreClick: () -> Unit,
     onBackClick: () -> Unit,
     onShowcaseAppClick: (App) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appDetails = remember { getApp() }
-    val showcaseApps = remember { getApps() }
+    val appDetails = uiState.appDetails
 
     val context = LocalContext.current
     val underDevelopmentText = stringResource(R.string.under_developement)
-
-    var descriptionCollapsed by remember { mutableStateOf(false) }
 
     Column(modifier.verticalScroll(rememberScrollState())) {
         Toolbar(
@@ -70,10 +61,8 @@ fun AppDetailsScreen(
         Spacer(Modifier.height(12.dp))
         AppDescription(
             description = appDetails.description,
-            collapsed = descriptionCollapsed,
-            onReadMoreClick = {
-                descriptionCollapsed = true
-            },
+            expanded = uiState.descriptionExpanded,
+            onReadMoreClick = onReadMoreClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -95,39 +84,9 @@ fun AppDetailsScreen(
         )
         Spacer(Modifier.height(12.dp))
         Showcase(
-            apps = showcaseApps,
+            apps = uiState.showcaseApps,
             onAppClick = onShowcaseAppClick,
             modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-// В будущем заменим этот метод на вызов API.
-private fun getApp(): AppDetails = AppDetails(
-    name = "Гильдия Героев: Экшен ММО РПГ",
-    developer = "VK Play",
-    category = Category.GAME,
-    ageRating = 12,
-    size = 223.7f,
-    screenshotUrlList = listOf(
-        "https://static.rustore.ru/imgproxy/-y8kd-4B6MQ-1OKbAbnoAIMZAzvoMMG9dSiHMpFaTBc/preset:web_scr_lnd_335/plain/https://static.rustore.ru/apk/393868735/content/SCREENSHOT/dfd33017-e90d-4990-aa8c-6f159d546788.jpg@webp",
-        "https://static.rustore.ru/imgproxy/dZCvNtRKKFpzOmGlTxLszUPmwi661IhXynYZGsJQvLw/preset:web_scr_lnd_335/plain/https://static.rustore.ru/apk/393868735/content/SCREENSHOT/60ec4cbc-dcf6-4e69-aa6f-cc2da7de1af6.jpg@webp",
-        "https://static.rustore.ru/imgproxy/g5whSI1uNqaL2TUO7TFfM8M63vXpWXNCm2vlX4Ahvc4/preset:web_scr_lnd_335/plain/https://static.rustore.ru/apk/393868735/content/SCREENSHOT/c2dde8bc-c4ab-482a-80a5-2789149f598d.jpg@webp",
-        "https://static.rustore.ru/imgproxy/TjeurtC7BczOVJt74XhjGYuQnG1l4rx6zpDqyMb00GY/preset:web_scr_lnd_335/plain/https://static.rustore.ru/apk/393868735/content/SCREENSHOT/08318f76-7a9c-43aa-b4a7-1aa878d00861.jpg@webp",
-    ),
-    iconUrl = "https://static.rustore.ru/imgproxy/APsbtHxkVa4MZ0DXjnIkSwFQ_KVIcqHK9o3gHY6pvOQ/preset:web_app_icon_62/plain/https://static.rustore.ru/apk/393868735/content/ICON/3f605e3e-f5b3-434c-af4d-77bc5f38820e.png@webp",
-    description = "Легендарный рейд героев в Фэнтези РПГ. Станьте героем гильдии и зразите мастера подземелья!"
-
-)
-
-@Preview
-@Composable
-private fun Preview() {
-    VkEducationTheme {
-        AppDetailsScreen(
-            onBackClick = {},
-            onShowcaseAppClick = {},
-            modifier = Modifier.fillMaxSize(),
         )
     }
 }

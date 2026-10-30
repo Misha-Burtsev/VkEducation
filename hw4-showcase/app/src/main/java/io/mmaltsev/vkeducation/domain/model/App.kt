@@ -1,6 +1,4 @@
-package io.mmaltsev.vkeducation.presentation.applist
-
-import io.mmaltsev.vkeducation.presentation.appdetails.Category
+package io.mmaltsev.vkeducation.domain.model
 
 data class App(
     val name: String,

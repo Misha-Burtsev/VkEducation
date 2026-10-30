@@ -1,9 +1,9 @@
-package io.mmaltsev.vkeducation.presentation.appdetails
+package io.mmaltsev.vkeducation.data.dto
 
-data class AppDetails(
+data class AppDetailsDto(
     val name: String,
     val developer: String,
-    val category: Category,
+    val category: String,
     val ageRating: Int,
     val size: Float,
     val iconUrl: String,

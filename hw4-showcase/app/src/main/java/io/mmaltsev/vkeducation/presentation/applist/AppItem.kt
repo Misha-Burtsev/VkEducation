@@ -20,13 +20,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import io.mmaltsev.vkeducation.R
-import io.mmaltsev.vkeducation.presentation.appdetails.Category
-import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
+import io.mmaltsev.vkeducation.domain.model.App
+import io.mmaltsev.vkeducation.domain.model.Category
 
 // Вёрстка одного приложения: общая для экрана списка и блока «Витрина».
 @Composable
@@ -75,21 +74,4 @@ fun AppItem(
 private fun getCategoryText(category: Category): String = when (category) {
     Category.APP -> stringResource(R.string.category_app)
     Category.GAME -> stringResource(R.string.category_game)
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    VkEducationTheme {
-        AppItem(
-            app = App(
-                name = "QuickNote",
-                developer = "Quick Apps",
-                category = Category.APP,
-                iconUrl = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI",
-            ),
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
 }
