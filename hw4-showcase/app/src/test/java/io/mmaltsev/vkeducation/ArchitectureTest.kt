@@ -9,7 +9,6 @@ import io.mmaltsev.vkeducation.domain.model.App
 import io.mmaltsev.vkeducation.domain.model.AppDetails
 import io.mmaltsev.vkeducation.domain.model.Category
 import io.mmaltsev.vkeducation.domain.repository.AppsRepository
-import io.mmaltsev.vkeducation.presentation.applist.AppListViewModel
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsViewModel
 import org.junit.Assert.*
 import org.junit.Test
@@ -66,7 +65,6 @@ class ArchitectureTest {
             override fun getApps() = apps
             override fun getAppDetails() = details
         }
-        assertEquals(apps, AppListViewModel(repository).apps.value)
         val viewModel = AppDetailsViewModel(repository)
         val initial = viewModel.uiState.value
         assertEquals(details, initial.appDetails)

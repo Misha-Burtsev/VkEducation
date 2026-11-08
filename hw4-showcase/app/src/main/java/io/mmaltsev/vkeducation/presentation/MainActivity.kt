@@ -42,9 +42,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(APP_LIST_ROUTE) {
                         val viewModel: AppListViewModel = viewModel(factory = container.viewModelFactory)
-                        val apps by viewModel.apps.collectAsStateWithLifecycle()
+                        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                         AppListScreen(
-                            apps = apps,
+                            uiState = uiState,
+                            onRetry = viewModel::load,
                             onAppClick = { navController.navigate(APP_DETAILS_ROUTE) },
                             modifier = Modifier.fillMaxSize(),
                         )

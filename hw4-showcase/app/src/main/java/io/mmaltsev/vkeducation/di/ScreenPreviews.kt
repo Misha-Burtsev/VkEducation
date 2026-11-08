@@ -8,6 +8,8 @@ import io.mmaltsev.vkeducation.data.source.LocalAppsDataSource
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsScreen
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsUiState
 import io.mmaltsev.vkeducation.presentation.applist.AppListScreen
+import io.mmaltsev.vkeducation.presentation.applist.CatalogUiState
+import io.mmaltsev.vkeducation.domain.model.CatalogApp
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 private val previewRepository = LocalAppsRepository(LocalAppsDataSource(), AppMapper())
@@ -16,7 +18,7 @@ private val previewRepository = LocalAppsRepository(LocalAppsDataSource(), AppMa
 @Composable
 private fun AppListPreview() {
     VkEducationTheme {
-        AppListScreen(apps = previewRepository.getApps(), onAppClick = {})
+        AppListScreen(uiState = CatalogUiState.Success(listOf(CatalogApp("1", "QuickNote", "Заметки", "Производительность", ""))), onRetry = {}, onAppClick = {})
     }
 }
 
