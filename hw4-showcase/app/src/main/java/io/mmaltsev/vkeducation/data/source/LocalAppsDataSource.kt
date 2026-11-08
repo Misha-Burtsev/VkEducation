@@ -1,10 +1,11 @@
 package io.mmaltsev.vkeducation.data.source
 
+import javax.inject.Inject
 import io.mmaltsev.vkeducation.data.dto.AppDetailsDto
 import io.mmaltsev.vkeducation.data.dto.AppDto
 
 /** Локальные DTO вместо ответа сервера. */
-class LocalAppsDataSource {
+class LocalAppsDataSource @Inject constructor() {
     fun getApps(): List<AppDto> = listOf(
         AppDto(
             name = "QuickNote",

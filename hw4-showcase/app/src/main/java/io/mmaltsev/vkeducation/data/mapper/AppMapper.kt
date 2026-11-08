@@ -1,12 +1,13 @@
 package io.mmaltsev.vkeducation.data.mapper
 
+import javax.inject.Inject
 import io.mmaltsev.vkeducation.data.dto.AppDetailsDto
 import io.mmaltsev.vkeducation.data.dto.AppDto
 import io.mmaltsev.vkeducation.domain.model.App
 import io.mmaltsev.vkeducation.domain.model.AppDetails
 import io.mmaltsev.vkeducation.domain.model.Category
 
-class AppMapper {
+class AppMapper @Inject constructor() {
     fun toDomain(dto: AppDto): App = App(
         name = dto.name,
         developer = dto.developer,

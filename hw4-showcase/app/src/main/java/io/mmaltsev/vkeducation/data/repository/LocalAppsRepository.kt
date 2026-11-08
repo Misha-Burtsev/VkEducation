@@ -1,12 +1,13 @@
 package io.mmaltsev.vkeducation.data.repository
 
+import javax.inject.Inject
 import io.mmaltsev.vkeducation.data.mapper.AppMapper
 import io.mmaltsev.vkeducation.data.source.LocalAppsDataSource
 import io.mmaltsev.vkeducation.domain.model.App
 import io.mmaltsev.vkeducation.domain.model.AppDetails
 import io.mmaltsev.vkeducation.domain.repository.AppsRepository
 
-class LocalAppsRepository(
+class LocalAppsRepository @Inject constructor(
     private val source: LocalAppsDataSource,
     private val mapper: AppMapper,
 ) : AppsRepository {

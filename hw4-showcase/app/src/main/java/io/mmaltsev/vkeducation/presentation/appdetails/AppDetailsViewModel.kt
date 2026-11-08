@@ -1,5 +1,7 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import io.mmaltsev.vkeducation.domain.model.App
 import io.mmaltsev.vkeducation.domain.model.AppDetails
@@ -14,7 +16,8 @@ data class AppDetailsUiState(
     val descriptionExpanded: Boolean = false,
 )
 
-class AppDetailsViewModel(repository: AppsRepository) : ViewModel() {
+@HiltViewModel
+class AppDetailsViewModel @Inject constructor(repository: AppsRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(
         AppDetailsUiState(repository.getAppDetails(), repository.getApps())
     )

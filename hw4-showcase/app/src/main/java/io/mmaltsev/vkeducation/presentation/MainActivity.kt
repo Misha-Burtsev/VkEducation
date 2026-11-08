@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.mmaltsev.vkeducation.di.AppContainer
+import dagger.hilt.android.AndroidEntryPoint
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsScreen
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsViewModel
 import io.mmaltsev.vkeducation.presentation.applist.AppListScreen
@@ -23,8 +23,8 @@ import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 private const val APP_LIST_ROUTE = "app_list"
 private const val APP_DETAILS_ROUTE = "app_details"
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val container = AppContainer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                         .safeDrawingPadding(),
                 ) {
                     composable(APP_LIST_ROUTE) {
-                        val viewModel: AppListViewModel = viewModel(factory = container.viewModelFactory)
+                        val viewModel: AppListViewModel = hiltViewModel()
                         val apps by viewModel.apps.collectAsStateWithLifecycle()
                         AppListScreen(
                             apps = apps,
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(APP_DETAILS_ROUTE) {
-                        val viewModel: AppDetailsViewModel = viewModel(factory = container.viewModelFactory)
+                        val viewModel: AppDetailsViewModel = hiltViewModel()
                         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                         AppDetailsScreen(
                             uiState = uiState,
