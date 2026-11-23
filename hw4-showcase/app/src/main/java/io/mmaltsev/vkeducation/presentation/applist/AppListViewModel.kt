@@ -3,13 +3,14 @@ package io.mmaltsev.vkeducation.presentation.applist
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.mmaltsev.vkeducation.data.repository.CatalogRepository
 import io.mmaltsev.vkeducation.domain.model.CatalogApp
+import io.mmaltsev.vkeducation.domain.repository.CatalogRepository
+import io.mmaltsev.vkeducation.domain.usecase.LoadCatalogRatingsUseCase
+import io.mmaltsev.vkeducation.domain.usecase.RatingLoadResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.system.measureTimeMillis
 
 sealed interface CatalogUiState {
     data object Loading : CatalogUiState
@@ -20,7 +21,10 @@ sealed interface CatalogUiState {
     data object Error : CatalogUiState
 }
 
-class AppListViewModel(private val repository: CatalogRepository) : ViewModel() {
+class AppListViewModel(
+    private val repository: CatalogRepository,
+    private val loadCatalogRatings: LoadCatalogRatingsUseCase,
+) : ViewModel() {
     private val _uiState = MutableStateFlow<CatalogUiState>(CatalogUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
@@ -36,9 +40,7 @@ class AppListViewModel(private val repository: CatalogRepository) : ViewModel() 
             try {
                 val apps = repository.getCatalog()
                 _uiState.value = CatalogUiState.Success(apps)
-                if (apps.isNotEmpty()) {
-                    loadRatings(apps)
-                }
+                loadRatings(apps)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -50,19 +52,15 @@ class AppListViewModel(private val repository: CatalogRepository) : ViewModel() 
     }
 
     private suspend fun loadRatings(apps: List<CatalogApp>) {
-        val ids = apps.map { it.id }
-
-        // Show ratings as soon as the faster run completes.
-        val parallelRatings: Map<String, Float>
-        val parallelMillis = measureTimeMillis {
-            parallelRatings = repository.loadRatingsInParallel(ids)
+        loadCatalogRatings(apps).collect { result ->
+            val mode = when (result) {
+                is RatingLoadResult.Parallel -> {
+                    _uiState.value = CatalogUiState.Success(apps, result.ratings)
+                    "Parallel"
+                }
+                is RatingLoadResult.Sequential -> "Sequential"
+            }
+            Log.i("CatalogRatings", "$mode: ${apps.size} apps in ${result.durationMillis} ms")
         }
-        _uiState.value = CatalogUiState.Success(apps, parallelRatings)
-        Log.i("CatalogRatings", "Parallel: ${ids.size} apps in ${parallelMillis} ms")
-
-        val sequentialMillis = measureTimeMillis {
-            repository.loadRatingsSequentially(ids)
-        }
-        Log.i("CatalogRatings", "Sequential: ${ids.size} apps in ${sequentialMillis} ms")
     }
 }

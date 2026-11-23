@@ -1,8 +1,9 @@
 package io.mmaltsev.vkeducation
 
+import io.mmaltsev.vkeducation.data.mapper.AppMapper
 import io.mmaltsev.vkeducation.data.network.CatalogApi
 import io.mmaltsev.vkeducation.data.network.CatalogService
-import io.mmaltsev.vkeducation.data.repository.CatalogRepository
+import io.mmaltsev.vkeducation.data.repository.NetworkCatalogRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -22,7 +23,7 @@ class CatalogNetworkTest {
                 .addConverterFactory(GsonConverterFactory.create()).build().create(CatalogService::class.java)
             val api = CatalogApi(service)
             server.enqueue(MockResponse().setBody("""[{"id":"abc","name":"QuickNote","description":"Notes","category":"Производительность","iconUrl":"https://example.com/icon"}]"""))
-            val app = CatalogRepository(api).getCatalog().single()
+            val app = NetworkCatalogRepository(api, AppMapper()).getCatalog().single()
             assertEquals("abc", app.id)
             assertEquals("QuickNote", app.name)
             assertEquals("Notes", app.description)
