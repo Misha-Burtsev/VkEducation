@@ -22,6 +22,7 @@ import io.mmaltsev.vkeducation.domain.model.App
 @Composable
 fun AppDetailsScreen(
     uiState: AppDetailsUiState,
+    onInstallClick: () -> Unit,
     onReadMoreClick: () -> Unit,
     onBackClick: () -> Unit,
     onShowcaseAppClick: (App) -> Unit,
@@ -46,9 +47,8 @@ fun AppDetailsScreen(
         )
         Spacer(Modifier.height(16.dp))
         InstallButton(
-            onClick = {
-                Toast.makeText(context, underDevelopmentText, Toast.LENGTH_SHORT).show()
-            },
+            installState = uiState.installState,
+            onClick = onInstallClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import io.mmaltsev.vkeducation.R
 import io.mmaltsev.vkeducation.domain.model.CatalogApp
 
 @Composable
@@ -37,6 +39,12 @@ fun AppListScreen(uiState: CatalogUiState, onRetry: () -> Unit, onAppClick: (Cat
                         Spacer(Modifier.width(12.dp))
                         Column {
                             Text(app.name, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            uiState.ratings[app.id]?.let { rating ->
+                                Text(
+                                    text = stringResource(R.string.catalog_rating, rating),
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
                             Text(app.description, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall)
                             Text(app.category, color = MaterialTheme.colorScheme.secondary, style = MaterialTheme.typography.bodySmall)
                         }

@@ -1,6 +1,7 @@
 package io.mmaltsev.vkeducation
 
 import io.mmaltsev.vkeducation.data.network.CatalogApi
+import io.mmaltsev.vkeducation.data.network.CatalogService
 import io.mmaltsev.vkeducation.data.repository.CatalogRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -17,8 +18,9 @@ class CatalogNetworkTest {
         val server = MockWebServer()
         server.start()
         try {
-            val api = Retrofit.Builder().baseUrl(server.url("/"))
-                .addConverterFactory(GsonConverterFactory.create()).build().create(CatalogApi::class.java)
+            val service = Retrofit.Builder().baseUrl(server.url("/"))
+                .addConverterFactory(GsonConverterFactory.create()).build().create(CatalogService::class.java)
+            val api = CatalogApi(service)
             server.enqueue(MockResponse().setBody("""[{"id":"abc","name":"QuickNote","description":"Notes","category":"Производительность","iconUrl":"https://example.com/icon"}]"""))
             val app = CatalogRepository(api).getCatalog().single()
             assertEquals("abc", app.id)

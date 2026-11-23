@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                         AppDetailsScreen(
                             uiState = uiState,
+                            onInstallClick = viewModel::onInstallClick,
                             onReadMoreClick = viewModel::expandDescription,
                             onBackClick = { navController.popBackStack() },
                             onShowcaseAppClick = {

@@ -31,6 +31,7 @@ private fun AppDetailsPreview() {
                 appDetails = previewRepository.getAppDetails(),
                 showcaseApps = previewRepository.getApps(),
             ),
+            onInstallClick = {},
             onReadMoreClick = {},
             onBackClick = {},
             onShowcaseAppClick = {},

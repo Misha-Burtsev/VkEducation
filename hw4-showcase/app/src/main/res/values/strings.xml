@@ -19,4 +19,7 @@
     <string name="app_details_showcase">Витрина</string>
 
     <string name="under_developement">В процессе разработки</string>
+    <string name="cancel_install">Отменить (%1$d%%)</string>
+    <string name="installed">Установлено</string>
+    <string name="catalog_rating">★ %1$.1f</string>
 </resources>
